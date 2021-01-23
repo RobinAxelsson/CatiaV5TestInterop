@@ -1,0 +1,5 @@
+﻿Sub CATMain()
+Dim strMessage As String
+strMessage = {}
+Msgbox strMessage
+End Sub

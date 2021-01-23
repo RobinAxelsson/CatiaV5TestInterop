@@ -1,0 +1,51 @@
+//https://www.youtube.com/watch?v=NKIdxJAbr0Q
+#include <iostream>
+
+extern "C" __declspec(dllexport) void HelloWorld();
+
+void HelloWorld()
+{
+	std::cout << "Hello World from Cpp";
+}
+
+Sub CATMain()
+
+Dim partDocument1 As PartDocument
+Set partDocument1 = CATIA.ActiveDocument
+
+Dim part1 As Part
+Set part1 = partDocument1.Part
+
+Dim bodies1 As Bodies
+Set bodies1 = part1.Bodies
+
+Dim body1 As Body
+Set body1 = bodies1.Item("Body.124")
+
+part1.InWorkObject = body1
+
+Dim shapeFactory1 As ShapeFactory
+Set shapeFactory1 = part1.ShapeFactory
+-------------------------------------------------------
+Dim translate1 As Translate
+Set translate1 = shapeFactory1.AddNewTranslate2(0#)
+
+Dim hybridShapeTranslate1 As HybridShapeTranslate
+Set hybridShapeTranslate1 = translate1.HybridShape
+
+hybridShapeTranslate1.VectorType = 1
+
+
+Set reference1 = part1.CreateReferenceFromObject(hybridShapePointCoord1)
+hybridShapeTranslate1.FirstPoint = reference1
+
+Dim reference2 As Reference
+Set reference2 = part1.CreateReferenceFromObject(hybridShapePointCoord2)
+
+hybridShapeTranslate1.SecondPoint = reference2
+
+part1.InWorkObject = hybridShapeTranslate1
+
+part1.Update
+
+End Sub
