@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace CatiaCsharp
 {
-    using static _CATPart;
     public static class _Factory
     {
         public static HybridShapeExtrude SimpleExtrude(object[] OriginPt, double y, double z, HybridBody hybridBody)
@@ -62,32 +61,33 @@ namespace CatiaCsharp
         {
             var coordRef = new object[3];
             originPoint.GetCoordinates(coordRef);
-            var pointXdir = CreatePointCoord(new object[] { (double)coordRef[0] + 1.0, coordRef[1], (double)coordRef[2] }, hybridBodyStream);
-            var pointYdir = CreatePointCoord(new object[] { (double)coordRef[0], (double)coordRef[1] + 1.0, (double)coordRef[2] }, hybridBodyStream);
-            var pointZdir = CreatePointCoord(new object[] { coordRef[0], coordRef[1], (double)coordRef[2] + 1.0 }, hybridBodyStream);
-            AxisSystem axisSystem = axisSystems.Add();
+            var pointXdir = CreatePointCoord(new object[] { (double)coordRef[0] + 1.0, coordRef[1], (double)coordRef[2] }, _CATPart.hybridBodyStream);
+            var pointYdir = CreatePointCoord(new object[] { (double)coordRef[0], (double)coordRef[1] + 1.0, (double)coordRef[2] }, _CATPart.hybridBodyStream);
+            var pointZdir = CreatePointCoord(new object[] { coordRef[0], coordRef[1], (double)coordRef[2] + 1.0 }, _CATPart.hybridBodyStream);
+            AxisSystem axisSystem = _CATPart.axisSystems.Add();
             axisSystem.set_Name(name);
             axisSystem.Type = CATAxisSystemMainType.catAxisSystemStandard;
             axisSystem.OriginType = CATAxisSystemOriginType.catAxisSystemOriginByPoint;
-            axisSystem.OriginPoint = GetRefFromObject(originPoint);
+            axisSystem.OriginPoint = Utilities.GetRefFromObject(originPoint);
             axisSystem.XAxisType = CATAxisSystemAxisType.catAxisSystemAxisByCoordinates;
-            axisSystem.XAxisDirection = GetRefFromObject(pointXdir);
+            axisSystem.XAxisDirection = Utilities.GetRefFromObject(pointXdir);
             axisSystem.YAxisType = CATAxisSystemAxisType.catAxisSystemAxisByCoordinates;
-            axisSystem.YAxisDirection = GetRefFromObject(pointYdir);
+            axisSystem.YAxisDirection = Utilities.GetRefFromObject(pointYdir);
             axisSystem.ZAxisType = CATAxisSystemAxisType.catAxisSystemAxisByCoordinates;
-            axisSystem.ZAxisDirection = GetRefFromObject(pointZdir);
-            _part.Update();
+            axisSystem.ZAxisDirection = Utilities.GetRefFromObject(pointZdir);
+            _CATPart._part.Update();
 
             return axisSystem;
 
         }
         public static void CreateCube(Body body, object[] originCoord, double length)
         {
-            selection.Clear();
+            Part _part = _CATPart._part;
+            _CATPart.selection.Clear();
             _part.InWorkObject = body;
-            var extrude1 = SimpleExtrude(originCoord, length, length, hybridBodyStream);
-            var extrudeRef1 = GetRefFromObject(extrude1);
-            ThickSurface thickSurface = shapeFactory.AddNewThickSurface(extrudeRef1, 0, 0.0, length);
+            var extrude1 = SimpleExtrude(originCoord, length, length, _CATPart.hybridBodyStream);
+            var extrudeRef1 = Utilities.GetRefFromObject(extrude1);
+            ThickSurface thickSurface = _CATPart.shapeFactory.AddNewThickSurface(extrudeRef1, 0, 0.0, length);
             _part.Update();
         }
     }

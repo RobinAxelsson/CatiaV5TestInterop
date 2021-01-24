@@ -10,10 +10,6 @@ namespace CatiaCsharp
 {
     public static class _Selection
     {
-        static _Selection()
-        {
-            selection = _CATPart.partDocument.Selection;
-        }
         public static List<SelectedElement> SelectElementsByName(string name = "")
         {
             var selElements = new List<SelectedElement>();

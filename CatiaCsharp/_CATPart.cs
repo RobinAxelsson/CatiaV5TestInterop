@@ -14,7 +14,7 @@ namespace CatiaCsharp
 {
     public static class _CATPart
     {
-        public static void Init(bool reset = true)
+        static _CATPart()
         {
             Catia = (Application)Marshal.GetActiveObject("Catia.Application");
             documents = Catia.Documents;
@@ -27,10 +27,7 @@ namespace CatiaCsharp
             {
                 partDocument = (PartDocument)Catia.ActiveDocument;
                 _part = partDocument.Part;
-                if (reset)
-                {
-                    ResetPartDocument();
-                }
+                ResetPartDocument();
             }
             else
             {
@@ -56,6 +53,7 @@ namespace CatiaCsharp
         public static HybridShapeFactory hybridShapeFactory { get; private set; }
         public static ShapeFactory shapeFactory { get; private set; }
         public static HybridBodies hybridBodies { get; private set; }
+        public static Bodies bodies { get; private set; }
         public static AxisSystem AbsoluteAxisSystem { get; set; }
         public static Window activeWindow { get; set; }
         public static HybridBody hybridBodyStream { get; set; }
@@ -136,23 +134,6 @@ namespace CatiaCsharp
             }
             _part.Update();
         }
-        public static Reference GetRefFromObject(AnyObject anyObject)
-        {
-            return _part.CreateReferenceFromObject(anyObject);
-        }
-        public static HybridShapeDirection GetAxisDirection(Globals.Axis axisDir)
-        {
-            switch (axisDir)
-            {
-                case Globals.Axis.X:
-                    return hybridShapeFactory.AddNewDirection(AbsoluteAxisSystem.XAxisDirection);
-                case Globals.Axis.Y:
-                    return hybridShapeFactory.AddNewDirection(AbsoluteAxisSystem.YAxisDirection);
-                case Globals.Axis.Z:
-                    return hybridShapeFactory.AddNewDirection(AbsoluteAxisSystem.ZAxisDirection);
-                default:
-                    return null;
-            }
-        }
+
     }
 }

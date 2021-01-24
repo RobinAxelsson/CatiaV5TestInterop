@@ -1,4 +1,7 @@
 ﻿using HybridShapeTypeLib;
+using INFITF;
+using MECMOD;
+using PARTITF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +57,38 @@ namespace CatiaCsharp
         public static object[] XYZParse((int X, int Y) points, double Z = 0.0)
         {
             return new object[] { points.X * Globals.PieceLengthDouble, points.Y * Globals.PieceLengthDouble, Z };
+        }
+        public static Reference GetRefFromObject(AnyObject anyObject)
+        {
+            return _CATPart._part.CreateReferenceFromObject(anyObject);
+        }
+        public static HybridShapeDirection GetAxisDirection(Globals.Axis axisDir)
+        {
+            switch (axisDir)
+            {
+                case Globals.Axis.X:
+                    return _CATPart.hybridShapeFactory.AddNewDirection(_CATPart.AbsoluteAxisSystem.XAxisDirection);
+                case Globals.Axis.Y:
+                    return _CATPart.hybridShapeFactory.AddNewDirection(_CATPart.AbsoluteAxisSystem.YAxisDirection);
+                case Globals.Axis.Z:
+                    return _CATPart.hybridShapeFactory.AddNewDirection(_CATPart.AbsoluteAxisSystem.ZAxisDirection);
+                default:
+                    return null;
+            }
+        }
+        public static HybridBody ClearHybridBody(HybridBody hybridBody)
+        {
+            _CATPart.selection.Clear();
+            string name = hybridBody.get_Name();
+            _CATPart.selection.Add(hybridBody);
+            _CATPart.selection.Delete();
+            HybridBody newHybridBody = _CATPart.hybridBodies.Add();
+            newHybridBody.set_Name(name);
+            return newHybridBody;
+        }
+        private static void newProduct()
+        {
+            _CATPart.partDocument.Product.Products.AddNewProduct("newProduct");
         }
 
     }
